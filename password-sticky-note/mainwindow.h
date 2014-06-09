@@ -21,9 +21,18 @@ class MainWindow : public QMainWindow
 
         void on_lockButton_clicked();
 
+        void on_passwordLineEdit_returnPressed();
+        void on_passwordLineEdit_textChanged( const QString &text );
+
     private:
 
+        static const QString filename;
+        static const QString lockModeButtonText;
+        static const QString openModeButtonText;
+
         bool _saveToFile( const QString &contents );
+        void _openFile();
+
         Ui::MainWindow *ui;
 };
 
