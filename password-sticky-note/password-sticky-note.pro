@@ -12,19 +12,19 @@ unix:UI_DIR = .ui/
 
 RESOURCES += icons/icons.qrc
 
-SOURCES += main.cpp\
-        mainwindow.cpp
-        aes.c
-        aescrypt.c
-        sha256.c
-        password.c
-        keyfile.c
+SOURCES += main.cpp \
+        mainwindow.cpp \
+        aes.c \
+        aescrypt.c \
+        sha256.c \
+        password.c \
+        keyfile.c 
 
-HEADERS  += mainwindow.h
-        aes.h
-        aescrypt.h
-        sha256.h
-        password.h
+HEADERS  += mainwindow.h \
+        aes.h \
+        aescrypt.h \
+        sha256.h \
+        password.h \
         keyfile.h
 
 FORMS    += mainwindow.ui
