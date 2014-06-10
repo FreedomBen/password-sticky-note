@@ -31,7 +31,10 @@ class MainWindow : public QMainWindow
         static const QString openModeButtonText;
 
         bool _saveToFile( const QString &contents );
-        void _openFile();
+        bool _openFile();
+
+        QByteArray _encrypt( const QString &plaintext );
+        QString _decrypt( const QByteArray &cipherText );
 
         Ui::MainWindow *ui;
 };

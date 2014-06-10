@@ -18,14 +18,15 @@ SOURCES += main.cpp \
         aescrypt.c \
         sha256.c \
         password.c \
-        keyfile.c 
+        keyfile.c \
 
 HEADERS  += mainwindow.h \
         aes.h \
         aescrypt.h \
         sha256.h \
         password.h \
-        keyfile.h
+        keyfile.h \
+        /usr/include/openssl/aes.h
 
 FORMS    += mainwindow.ui
 
