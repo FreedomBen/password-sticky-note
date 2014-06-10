@@ -24,7 +24,7 @@ class MainWindow : public QMainWindow
         void on_passwordLineEdit_returnPressed();
         void on_passwordLineEdit_textChanged( const QString &text );
 
-        void on_passwordCheckBox_stateChanged( int state );
+        void on_showPasswordCheckBox_stateChanged( int state );
 
     private:
 

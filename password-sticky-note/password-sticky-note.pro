@@ -1,5 +1,9 @@
 
-QT       += core gui
+CONFIG -= release
+CONFIG += debug
+CONFIG += warn_on
+
+QT += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -9,8 +13,6 @@ TEMPLATE = app
 unix:MOC_DIR = .moc/
 unix:OBJECTS_DIR = .objects/
 unix:UI_DIR = .ui/
-
-CONFIG += warn_on
 
 # Required for using PKGCONFIG variable, and we use PKGCONFIG to get openssl
 CONFIG += link_pkgconfig
@@ -35,7 +37,7 @@ HEADERS  += mainwindow.h \
         sha256.h \
         password.h \
         keyfile.h \
-        /usr/include/openssl/aes.h
+        logger.h
 
 FORMS    += mainwindow.ui
 

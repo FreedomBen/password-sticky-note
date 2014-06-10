@@ -191,7 +191,7 @@ QByteArray MainWindow::_password()
     return QCryptographicHash::hash( plainPassword, QCryptographicHash::Sha1 );
 }
 
-void MainWindow::on_passwordCheckBox_stateChanged( int state )
+void MainWindow::on_showPasswordCheckBox_stateChanged( int state )
 {
     Q_ASSERT( state != Qt::PartiallyChecked );
     Q_ASSERT( state == Qt::Checked || state == Qt::Unchecked );
