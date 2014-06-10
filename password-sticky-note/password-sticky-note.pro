@@ -10,6 +10,15 @@ unix:MOC_DIR = .moc/
 unix:OBJECTS_DIR = .objects/
 unix:UI_DIR = .ui/
 
+CONFIG += warn_on
+
+# Required for using PKGCONFIG variable, and we use PKGCONFIG to get openssl
+CONFIG += link_pkgconfig
+PKGCONFIG += openssl
+
+QMAKE_CXXFLAGS += -Wall
+QMAKE_CXXFLAGS += -Werror
+
 RESOURCES += icons/icons.qrc
 
 SOURCES += main.cpp \
