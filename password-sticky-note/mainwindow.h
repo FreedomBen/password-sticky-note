@@ -24,14 +24,19 @@ class MainWindow : public QMainWindow
         void on_passwordLineEdit_returnPressed();
         void on_passwordLineEdit_textChanged( const QString &text );
 
+        void on_passwordCheckBox_stateChanged( int state );
+
     private:
 
         static const QString filename;
         static const QString lockModeButtonText;
         static const QString openModeButtonText;
+        static const QString emptyFileText;
 
+        QString _filename();
         bool _saveToFile( const QString &contents );
         bool _openFile();
+        QByteArray _password();
 
         QByteArray _encrypt( const QString &plaintext );
         QString _decrypt( const QByteArray &cipherText );

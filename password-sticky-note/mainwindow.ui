@@ -25,7 +25,18 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QLineEdit" name="passwordLineEdit"/>
+       <widget class="QLineEdit" name="passwordLineEdit">
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="showPasswordCheckBox">
+        <property name="text">
+         <string>Show</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QPushButton" name="lockButton">

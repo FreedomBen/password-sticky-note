@@ -2,9 +2,12 @@
 #include <QDir>
 #include <QFile>
 #include <QtDebug>
+#include <QMessageBox>
+#include <QCryptographicHash>
 
 #include <openssl/aes.h>
 
+#include "logger.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -13,6 +16,7 @@ const QString MainWindow::filename = "/.passwords";
 const QString MainWindow::lockModeButtonText = "Lock and E&xit";
 const QString MainWindow::openModeButtonText = "&Open and Unlock";
 
+const QString MainWindow::emptyFileText = "You can type your passwords in here in any format you want.  They will be stored encrypted and can only be unlocked using the password that you set";
 
 MainWindow::MainWindow( QWidget *parent ) :
     QMainWindow( parent ),
@@ -37,10 +41,14 @@ void MainWindow::on_lockButton_clicked()
         {
             ui->textEdit->setText( "There was a problem unlocking the password file.  Please double check the password." );
         }
+        else
+        {
+            ui->lockButton->setText( lockModeButtonText );
+        }
     }
     else
     {
-
+        _saveToFile( ui->textEdit->toPlainText() );
     }
 }
 
@@ -58,10 +66,12 @@ void MainWindow::on_passwordLineEdit_textChanged( const QString &text )
 
 bool MainWindow::_openFile()
 {
-    QFile file( QDir::homePath() + filename );
+    QFile file( _filename() );
 
     if( !file.exists() )
     {
+        qDebug() << __CLASS_FUNCTION__ << ": Password file does not exist";
+        ui->textEdit->setText( emptyFileText );
         return true;
     }
 
@@ -77,6 +87,8 @@ bool MainWindow::_openFile()
 
     if( !dec.isEmpty() )
         ui->textEdit->setText( dec );
+    else
+        qWarning() << __CLASS_FUNCTION__ << ": File exists but returned empty";
 
     return !dec.isEmpty();
 }
@@ -147,4 +159,42 @@ QString MainWindow::_decrypt( const QByteArray &cipherText )
     QString retval( reinterpret_cast<char*>( dec_out ) );
     free( dec_out );
     return retval;
+}
+
+bool MainWindow::_saveToFile( const QString &contents )
+{
+    QByteArray a = _encrypt( contents );
+
+    QFile file( _filename() );
+    if( !file.open( QIODevice::WriteOnly ) )
+    {
+        QMessageBox::critical( this, "Could not open file for writing", "Could not write to file.  Please check permissions of " + _filename() );
+        return false;
+    }
+
+    return file.write( a.constData(), a.length() ) == a.length();
+}
+
+QString MainWindow::_filename()
+{
+    return QDir::homePath() + filename;
+}
+
+QByteArray MainWindow::_password()
+{
+    QByteArray plainPassword;
+    const char * c = plainPassword.constData();
+
+    for( int i=0; i<plainPassword.length(); ++i )
+        plainPassword.append( c[i] );
+
+    return QCryptographicHash::hash( plainPassword, QCryptographicHash::Sha1 );
+}
+
+void MainWindow::on_passwordCheckBox_stateChanged( int state )
+{
+    Q_ASSERT( state != Qt::PartiallyChecked );
+    Q_ASSERT( state == Qt::Checked || state == Qt::Unchecked );
+
+    ui->passwordLineEdit->setEchoMode( state == Qt::Checked ? QLineEdit::Normal : QLineEdit::Password );
 }
