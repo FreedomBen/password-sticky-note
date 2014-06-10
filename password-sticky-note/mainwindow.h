@@ -36,6 +36,8 @@ class MainWindow : public QMainWindow
         QString _filename();
         bool _saveToFile( const QString &contents );
         bool _openFile();
+
+        unsigned char * _key();
         QByteArray _password();
 
         QByteArray _encrypt( const QString &plaintext );

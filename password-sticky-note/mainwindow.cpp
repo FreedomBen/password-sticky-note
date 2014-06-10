@@ -93,14 +93,16 @@ bool MainWindow::_openFile()
     return !dec.isEmpty();
 }
 
-static const unsigned char key[] = {
-    0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
-    0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff,
-    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-};
+// static const unsigned char key[] = {
+//  0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+//  0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff,
+//  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+// };
 
 QByteArray MainWindow::_encrypt( const QString &plaintext )
 {
+    unsigned char *key = _key();
+
     unsigned char text[ plaintext.length() ];
 
     for( int i=0; i<plaintext.length(); ++i )
@@ -135,6 +137,7 @@ QByteArray MainWindow::_encrypt( const QString &plaintext )
     Q_ASSERT( lastchar != 0 );
     Q_ASSERT( lastchar < enc_len );
 
+    free( key );
     free( enc_out );
 
     return retval;
@@ -142,6 +145,8 @@ QByteArray MainWindow::_encrypt( const QString &plaintext )
 
 QString MainWindow::_decrypt( const QByteArray &cipherText )
 {
+    unsigned char *key = _key();
+
     unsigned char enc[cipherText.length()];
 
     for( int i=0; i<cipherText.length(); ++i )
@@ -155,6 +160,8 @@ QString MainWindow::_decrypt( const QByteArray &cipherText )
 
     AES_set_decrypt_key( key, 128, &dec_key );
     AES_decrypt( enc, dec_out, &dec_key );
+
+    free( key );
 
     QString retval( reinterpret_cast<char*>( dec_out ) );
     free( dec_out );
@@ -180,13 +187,25 @@ QString MainWindow::_filename()
     return QDir::homePath() + filename;
 }
 
+unsigned char * MainWindow::_key()
+{
+    QByteArray password = _password();
+    Q_ASSERT( !password.isEmpty() );
+
+    unsigned char *retval = static_cast<unsigned char *>( malloc( password.length() ) );
+
+    for( int i=0; i<password.length(); ++i )
+        retval[i] = password.at( i );
+
+    return retval;
+}
+
 QByteArray MainWindow::_password()
 {
     QByteArray plainPassword;
-    const char * c = plainPassword.constData();
 
-    for( int i=0; i<plainPassword.length(); ++i )
-        plainPassword.append( c[i] );
+    for( int i=0; i<ui->passwordLineEdit->text().length(); ++i )
+        plainPassword.append( ui->passwordLineEdit->text().at( i ).toAscii() );
 
     return QCryptographicHash::hash( plainPassword, QCryptographicHash::Sha1 );
 }
