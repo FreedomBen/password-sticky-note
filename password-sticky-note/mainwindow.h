@@ -26,6 +26,8 @@ class MainWindow : public QMainWindow
 
         void on_showPasswordCheckBox_stateChanged( int state );
 
+        void on_generatePasswordButton_clicked();
+
     private:
 
         static const QString filename;

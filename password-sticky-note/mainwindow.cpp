@@ -1,6 +1,7 @@
 
 #include <QDir>
 #include <QFile>
+#include <QUuid>
 #include <QtDebug>
 #include <QMessageBox>
 #include <QCryptographicHash>
@@ -216,4 +217,12 @@ void MainWindow::on_showPasswordCheckBox_stateChanged( int state )
     Q_ASSERT( state == Qt::Checked || state == Qt::Unchecked );
 
     ui->passwordLineEdit->setEchoMode( state == Qt::Checked ? QLineEdit::Normal : QLineEdit::Password );
+}
+
+void MainWindow::on_generatePasswordButton_clicked()
+{
+    QString str = QUuid::createUuid().toString();
+    str.replace( "{", "" ).replace( "}", "" ).replace( "-", "" );
+    str.replace( "a", "A" ).replace( "b", "B" ).replace( "c", "C" );
+    ui->generatePasswordLineEdit->setText( str );
 }
