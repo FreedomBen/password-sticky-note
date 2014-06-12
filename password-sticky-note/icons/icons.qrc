@@ -2,5 +2,11 @@
   <qresource prefix="/">
     <file>lock.png</file>
     <file>lock-open.png</file>
+    <file>save.png</file>
+    <file>x-blue.png</file>
+    <file>x-gray.png</file>
+    <file>x-white.png</file>
+    <file>x-yellow.png</file>
+    <file>x.png</file>
   </qresource>
 </RCC>
