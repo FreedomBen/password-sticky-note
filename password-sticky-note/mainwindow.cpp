@@ -13,7 +13,7 @@
 #include "ui_mainwindow.h"
 
 
-const QString MainWindow::filename = "/.passwords";
+const QString MainWindow::filename = "/.psk";
 const QString MainWindow::lockModeButtonText = "Lock and E&xit";
 const QString MainWindow::openModeButtonText = "&Open and Unlock";
 
@@ -108,7 +108,7 @@ QByteArray MainWindow::_encrypt( const QString &plaintext )
 
     for( int i=0; i<plaintext.length(); ++i )
     {
-        text[i] = plaintext.at( i ).toAscii();
+        text[i] = plaintext.at( i ).toLatin1();
     }
 
     int enc_len = plaintext.length() * 2 * sizeof( char );
@@ -206,7 +206,7 @@ QByteArray MainWindow::_password()
     QByteArray plainPassword;
 
     for( int i=0; i<ui->passwordLineEdit->text().length(); ++i )
-        plainPassword.append( ui->passwordLineEdit->text().at( i ).toAscii() );
+        plainPassword.append( ui->passwordLineEdit->text().at( i ).toLatin1() );
 
     return QCryptographicHash::hash( plainPassword, QCryptographicHash::Sha1 );
 }
